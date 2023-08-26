@@ -1,0 +1,22 @@
+.monthly-nav-items {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.arrow {
+  margin: 10px;
+  width: 40px;
+  height: 40px;
+  background: none;
+}
+
+.monthlynav-dates-title {
+  width: 200px;
+  text-align: center;
+}
+
+.arrow-image {
+  filter: invert(18%) sepia(93%) saturate(3721%) hue-rotate(218deg)
+    brightness(95%) contrast(92%);
+}

@@ -1,0 +1,57 @@
+.month {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  background: black;
+}
+
+.month-container {
+  background: green;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+}
+
+.weekday-container {
+  height: 25px;
+  width: 100%;
+  display: grid;
+
+  grid-template-columns: repeat(7, 1fr);
+
+  background: #e0e0e0;
+}
+
+.weekday {
+  text-align: center;
+  line-height: 25px;
+}
+
+.day {
+  background: white;
+  border: 1px solid #e0e0e0;
+}
+
+.day:hover {
+  background: rgb(11, 88, 229);
+  color: white;
+}
+
+.day-selected {
+  background: rgb(11, 88, 229);
+  color: white;
+}
+
+.day-darken {
+  background: rgb(200, 195, 195);
+  color: rgb(149, 149, 149);
+
+  border: 1px solid #e0e0e0;
+}
+
+.day-darken:disabled {
+  cursor: default;
+}
