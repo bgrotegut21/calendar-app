@@ -1,11 +1,11 @@
+import { useState } from 'react';
 
+const Switch = ({ onSwitch }) => {
+  const handleSwitch = () => {};
 
-
-const Switch = ({onClick}) => {
   return (
-    <div className = 'switch'>
-      <button className = 'trigger'
-
+    <div className="switch">
+      <button className="switch-triggerbutton"></button>
     </div>
-  )
-}
+  );
+};
