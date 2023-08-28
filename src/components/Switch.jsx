@@ -1,11 +1,28 @@
+import '../styles/Switch.css';
+
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 
 const Switch = ({ onSwitch }) => {
-  const handleSwitch = () => {};
+  const [isOn, setIsOn] = useState(false);
+
+  const handleSwitch = () => {
+    setTimeout(() => {
+      setIsOn(!isOn);
+      onSwitch();
+    }, 500);
+  };
 
   return (
     <div className="switch">
-      <button className="switch-triggerbutton"></button>
+      <button className="switch-triggerbutton" onClick={handleSwitch}></button>
+      <div className={`switchball switchball-${isOn ? 'on' : 'off'}`}></div>
     </div>
   );
 };
+
+Switch.propTypes = {
+  onSwitch: PropTypes.func,
+};
+
+export default Switch;

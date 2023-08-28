@@ -68,3 +68,21 @@
 
   height: 50px;
 }
+
+.switch-icon {
+  width: 30px;
+  height: 30px;
+  margin: 2px;
+}
+
+.switch-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 120px;
+}
+
+.top-row {
+  display: flex;
+  justify-content: space-between;
+}

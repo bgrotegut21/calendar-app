@@ -45,14 +45,18 @@ const getShortenWeekdayNames = () => {
   return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 };
 
-const convertMinutesToTime = (minutes) => {
+const convertMinutesToTime = (minutes, millitaryTime) => {
   let hours = minutes / 60;
   let sign = 'AM';
+  if (millitaryTime) sign = '';
+
   const minutesLeft = minutes % 60;
 
-  if (hours >= 12) {
-    if (hours > 12) hours = hours - 12;
-    sign = 'PM';
+  if (!millitaryTime) {
+    if (hours >= 12) {
+      if (hours > 12) hours = hours - 12;
+      sign = 'PM';
+    }
   }
 
   let hoursString = hours.toString();
@@ -64,7 +68,9 @@ const convertMinutesToTime = (minutes) => {
 
   if (minutesString.length === 1) minutesString = `0${minutesString}`;
 
-  const timeString = `${hoursString}:${minutesString} ${sign}`;
+  let timeString = `${hoursString}:${minutesString} ${sign}`;
+  if (millitaryTime) timeString = timeString.split(' ').join('');
+
   return timeString;
 };
 
@@ -235,6 +241,18 @@ const getCurrentDate = () => {
   };
 };
 
+const convertDateToObject = (date) => {
+  const day = date.getDate();
+  const month = date.getMonth();
+  const year = date.getFullYear();
+
+  return {
+    day,
+    month,
+    year,
+  };
+};
+
 export {
   getCalendarDays,
   getCurrentDate,
@@ -242,4 +260,5 @@ export {
   getMonthName,
   getShortenWeekdayNames,
   convertMinutesToTime,
+  convertDateToObject,
 };

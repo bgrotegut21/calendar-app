@@ -30,7 +30,7 @@ Day.propTypes = {
   onClick: PropTypes.func,
 };
 
-const Month = ({ date, data, changeDay }) => {
+const Month = ({ date,  changeDay }) => {
   const currentCalendar = getCalendarDays(date.year, date.month, date.day);
   console.log(currentCalendar);
   return (

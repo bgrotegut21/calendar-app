@@ -6,8 +6,13 @@ import refreshIcon from '../../public/images/refresh.svg';
 import trashIcon from '../../public/images/trash.svg';
 import addIcon from '../../public/images/add.svg';
 
+import plusOnIcon from '../../public/images/plusOn.svg';
+import plusOffIcon from '../../public/images/plusOff.svg';
+
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+
+import Switch from './Switch';
 
 const Item = ({ icon, text }) => {
   const [hovering, setHovering] = useState('');
@@ -58,10 +63,24 @@ ExitButton.propTypes = {
   onClose: PropTypes.func,
 };
 
-const SelectionBar = ({ isOpen, onClose }) => {
+const SelectionBar = ({ isOpen, onClose, onSwitch }) => {
   return (
     <div className={`selectionbar selectionbar-${isOpen ? 'visible' : ''}`}>
-      <ExitButton onClose={onClose} />
+      <div className="top-row">
+        <ExitButton onClose={onClose} />
+
+        <div className="switch-container">
+          <img className="switch-icon" src={plusOnIcon} alt="plus button on" />
+
+          <Switch onSwitch={onSwitch} />
+
+          <img
+            className="switch-icon"
+            src={plusOffIcon}
+            alt="plus button off"
+          />
+        </div>
+      </div>
       <Item icon={accountIcon} text="Account" />
       <Item icon={logoutIcon} text="Logout" />
       <Item icon={trashIcon} text="Delete Account" />
@@ -74,6 +93,7 @@ const SelectionBar = ({ isOpen, onClose }) => {
 SelectionBar.propTypes = {
   onClose: PropTypes.func,
   isOpen: PropTypes.bool,
+  onSwitch: PropTypes.func,
 };
 
 export default SelectionBar;

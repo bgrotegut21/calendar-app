@@ -8,23 +8,20 @@ import Nav from './Nav';
 import Calendar from './Calendar';
 import Tasks from './Tasks';
 import SelectionBar from './SelectionBar';
+import TaskPopup from './TaskPopup';
 
 function App() {
-  const [status, setStatus] = useState('normal');
+  const [status, setStatus] = useState('taskpopup');
 
   const [date, setDate] = useState(getCurrentDate);
   const [state, dispatch] = useReducer(reducer, data);
+  const [showTaskAdder, setShowTaskAdder] = useState(true);
+  const [taskid, setTaskId] = useState(null);
 
   const selectionBarIsOpen = status === 'selectionbar';
   const taskPopupIsOpen = status === 'taskpopup' || status === 'taskpopupEdit';
   console.log(taskPopupIsOpen, 'the task popup is open');
 
-  const actionStatus =
-    status === 'taskpopup'
-      ? 'add'
-      : status === 'taskpopupEdit'
-      ? 'update'
-      : 'normal';
 
   const handlePreviousMonth = () => {
     const previousMonth = getRightDateIndex(date.year, date.month - 1);
@@ -36,20 +33,12 @@ function App() {
     setDate(nextMonth);
   };
 
-  const handleTaskPopup = () => {
-    const latestStatus =
-      status === 'taskpopup' || status === 'taskpopupEdit'
-        ? 'normal'
-        : 'taskpopup';
-
-    setStatus(latestStatus);
+  const handleTaskPopup = (id) => {
+    setStatus('taskpopup');
+    setTaskId(id);
   };
 
-  const handleTaskEdit = () => {
-    const latestStatus =
-      status === 'taskpopupEdit' ? 'normal' : 'taskpopupEdit';
-    setStatus(latestStatus);
-  };
+
 
   const changeDay = (day) => {
     setDate({
@@ -68,6 +57,15 @@ function App() {
         overlay
       </div>
 
+      {taskPopupIsOpen && (
+        <TaskPopup
+          data={state}
+          date={date}
+          taskId={taskid}
+          dispatch={dispatch}
+        />
+      )}
+
       <Nav
         onOpen={() => {
           setStatus('selectionbar');
@@ -78,6 +76,7 @@ function App() {
         onClose={() => {
           setStatus('normal');
         }}
+        onSwitch={() => setShowTaskAdder(!showTaskAdder)}
       />
 
       <div className="main-section">
@@ -90,10 +89,11 @@ function App() {
         />
         <Tasks
           data={state}
+          date={date}
           dispatch={dispatch}
           isTaskPopup={taskPopupIsOpen}
           onTaskPopup={handleTaskPopup}
-          onEdit={handleTaskEdit}
+          showTaskAdder={showTaskAdder}
         />
       </div>
     </div>

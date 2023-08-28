@@ -64,6 +64,19 @@ const data = [
   },
 ];
 
+const filterDataByDate = (data, date) => {
+  return data.filter(
+    (item) =>
+      item.year === date.year &&
+      item.month === date.month &&
+      item.day === date.day
+  );
+};
+
+const filterDateById = (data, id) => {
+  if (id === null) return null;
+  return data.filter((item) => item.id === id);
+};
 const createDefaultTask = () => {
   let startTime = 420;
   let endTime = 720;
@@ -86,7 +99,10 @@ const reducer = (state, action) => {
   console.log('');
   switch (action.type) {
     case 'add':
-      return [...state, action.payload];
+      return [...state, {
+        ...action.payload,
+        id: uuidv4(),
+      }]
 
     case 'update':
       return state.map((item) => {
@@ -101,4 +117,4 @@ const reducer = (state, action) => {
   }
 };
 
-export { data, createDefaultTask, reducer };
+export { data, createDefaultTask, reducer, filterDataByDate, filterDateById };

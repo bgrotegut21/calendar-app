@@ -1,0 +1,4 @@
+.task-popup {
+  position: absolute;
+  z-index: 3;
+}
