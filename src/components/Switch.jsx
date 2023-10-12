@@ -5,11 +5,16 @@ import PropTypes from 'prop-types';
 
 const Switch = ({ onSwitch }) => {
   const [isOn, setIsOn] = useState(false);
+  const [deounce, setDebounce] = useState(false);
 
   const handleSwitch = () => {
+    if (deounce) return;
+    setDebounce(true);
+    setIsOn(!isOn);
+    onSwitch();
+
     setTimeout(() => {
-      setIsOn(!isOn);
-      onSwitch();
+      setDebounce(false);
     }, 500);
   };
 

@@ -19,9 +19,8 @@ function App() {
   const [taskid, setTaskId] = useState(null);
 
   const selectionBarIsOpen = status === 'selectionbar';
-  const taskPopupIsOpen = status === 'taskpopup' || status === 'taskpopupEdit';
+  const taskPopupIsOpen = status === 'taskpopup';
   console.log(taskPopupIsOpen, 'the task popup is open');
-
 
   const handlePreviousMonth = () => {
     const previousMonth = getRightDateIndex(date.year, date.month - 1);
@@ -33,12 +32,14 @@ function App() {
     setDate(nextMonth);
   };
 
+  //if the id is null it will still bring up the task popup however the taskpopup will add a
+  //new task instead of editing an existing one
   const handleTaskPopup = (id) => {
-    setStatus('taskpopup');
+    if (taskPopupIsOpen) return setStatus('normal');
+
     setTaskId(id);
+    setStatus('taskpopup');
   };
-
-
 
   const changeDay = (day) => {
     setDate({
@@ -63,6 +64,7 @@ function App() {
           date={date}
           taskId={taskid}
           dispatch={dispatch}
+          onTaskPopup={handleTaskPopup}
         />
       )}
 
@@ -91,9 +93,9 @@ function App() {
           data={state}
           date={date}
           dispatch={dispatch}
-          isTaskPopup={taskPopupIsOpen}
           onTaskPopup={handleTaskPopup}
-          showTaskAdder={showTaskAdder}
+          showTaskAdder={showTaskAdder && !selectionBarIsOpen}
+          isTaskPopup={taskPopupIsOpen}
         />
       </div>
     </div>

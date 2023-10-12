@@ -1,4 +1,4 @@
-import { getMonth, getDaysInMonth, getDay, getDate } from 'date-fns';
+import { getMonth, getDaysInMonth, getDay, formatISO } from 'date-fns';
 
 const getCurrentMonth = (currentDate) => {
   const currentMonth = getMonth(currentDate);
@@ -46,32 +46,36 @@ const getShortenWeekdayNames = () => {
 };
 
 const convertMinutesToTime = (minutes, millitaryTime) => {
-  let hours = minutes / 60;
-  let sign = 'AM';
-  if (millitaryTime) sign = '';
+  if (minutes > 1439) throw new Error('Minutes cannot be greater than 1439');
 
-  const minutesLeft = minutes % 60;
+  let sign = 'AM';
+  let minutesLeft = minutes % 60;
+  let hours = (minutes - minutesLeft) / 60;
 
   if (!millitaryTime) {
     if (hours >= 12) {
-      if (hours > 12) hours = hours - 12;
       sign = 'PM';
+      hours = hours > 12 ? (hours -= 12) : hours;
     }
   }
 
-  let hoursString = hours.toString();
-  let minutesString = minutesLeft.toString();
-
-  console.log(minutesString, 'minutesString');
+  let hoursString = String(hours);
+  let minutesString = String(minutesLeft);
 
   if (hoursString.length === 1) hoursString = `0${hoursString}`;
-
   if (minutesString.length === 1) minutesString = `0${minutesString}`;
 
-  let timeString = `${hoursString}:${minutesString} ${sign}`;
-  if (millitaryTime) timeString = timeString.split(' ').join('');
+  if (!millitaryTime) return `${hoursString}:${minutesString} ${sign}`;
+  return `${hoursString}:${minutesString}`;
+};
 
-  return timeString;
+const converTimeToMinutes = (millitaryTime) => {
+  const splitTime = millitaryTime.split(':');
+  const hours = Number(splitTime[0]);
+  const minutes = Number(splitTime[1]);
+
+  const totalMinutes = hours * 60 + minutes;
+  return totalMinutes;
 };
 
 const getDaysOfTheMonthObjects = (amountOfDays, firstDayOfWeek) => {
@@ -241,6 +245,20 @@ const getCurrentDate = () => {
   };
 };
 
+const convertObjectToDate = (dateObject) => {
+  const { day, month, year } = dateObject;
+  return new Date(year, month, day);
+};
+
+const converDateToISO = (dateObject) => {
+  const { day, month, year } = dateObject;
+  console.log(dateObject, 'the date object');
+
+  const date = new Date(year, month, day);
+
+  return formatISO(date, { representation: 'date' });
+};
+
 const convertDateToObject = (date) => {
   const day = date.getDate();
   const month = date.getMonth();
@@ -261,4 +279,7 @@ export {
   getShortenWeekdayNames,
   convertMinutesToTime,
   convertDateToObject,
+  convertObjectToDate,
+  converDateToISO,
+  converTimeToMinutes,
 };

@@ -1,47 +1,4 @@
-.taskadder {
-  background: rgb(36, 104, 229);
-  width: 80px;
-  border-radius: 100%;
-  position: absolute;
-  height: 80px;
-  left: 10px;
-  bottom: 5%;
-  box-shadow: 1px 2px 13px 1px rgba(0, 0, 0, 1);
 
-  z-index: 2;
-}
-
-.taskadder-triggerbutton {
-  position: absolute;
-  z-index: 3;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-}
-
-.task-line1 {
-  background-color: white;
-  width: 50px;
-  height: 5px;
-  transform: rotate(90deg) translateY(-15px) translateX(38px);
-  transition: transform 0.5s ease-in-out;
-}
-
-.task-line2 {
-  background-color: white;
-  width: 50px;
-  height: 5px;
-  transform: translateY(34px) translateX(14px);
-  transition: transform 0.5s ease-in-out;
-}
-
-.task-line1-animation {
-  transform: rotate(50deg) translateY(14px) translateX(38px);
-}
-
-.task-line2-animation {
-  transform: rotate(-40deg) translateY(35px) translateX(-10px);
-}
 
 .task-list {
   display: flex;

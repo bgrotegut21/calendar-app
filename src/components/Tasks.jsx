@@ -6,6 +6,7 @@ import editIcon from '../../public/images/edit.svg';
 
 import { useState } from 'react';
 import { filterDataByDate } from '../scripts/data.js';
+import TaskAdder from './TaskAdder';
 
 const IconButton = ({ icon, alt, onClick }) => {
   return (
@@ -72,7 +73,6 @@ const Tasks = ({
   isTaskPopup,
   onTaskPopup,
 }) => {
-  const animation = isTaskPopup ? 'animation' : '';
   const currentData = filterDataByDate(data, date);
 
   const handleDelete = (id) => {
@@ -84,17 +84,10 @@ const Tasks = ({
   return (
     <div className="tasks">
       {showTaskAdder && (
-        <div className="taskadder">
-          <button
-            className="taskadder-triggerbutton"
-            onClick={() => onTaskPopup(null)}
-          ></button>
-
-          <div className="taskadder-container">
-            <div className={`task-line1 task-line1-${animation}`}></div>
-            <div className={`task-line2 task-line2-${animation}`}></div>
-          </div>
-        </div>
+        <TaskAdder
+          onTaskPopup={() => onTaskPopup(null)}
+          isTaskPopup={isTaskPopup}
+        />
       )}
 
       <div className="task-list">
@@ -102,7 +95,7 @@ const Tasks = ({
           <Task
             key={taskData.id}
             taskData={taskData}
-            onEdit={onTaskPopup}
+            onEdit={() => onTaskPopup(taskData.id)}
             onDelete={() => handleDelete(taskData.id)}
           />
         ))}
@@ -123,6 +116,5 @@ Tasks.propTypes = {
   isTaskPopup: PropTypes.bool,
   showTaskAdder: PropTypes.bool,
   onEdit: PropTypes.func,
-  isTaskAdderButton: PropTypes.bool,
 };
 export default Tasks;
