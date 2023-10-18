@@ -57,7 +57,14 @@ const convertMinutesToTime = (minutes, millitaryTime) => {
       sign = 'PM';
       hours = hours > 12 ? (hours -= 12) : hours;
     }
+    if (hours === 0) {
+      hours = 12;
+      sign = 'AM';
+    }
   }
+
+  console.log(hours, 'the hours');
+  console.log(minutesLeft, 'the minutes left');
 
   let hoursString = String(hours);
   let minutesString = String(minutesLeft);
@@ -69,7 +76,7 @@ const convertMinutesToTime = (minutes, millitaryTime) => {
   return `${hoursString}:${minutesString}`;
 };
 
-const converTimeToMinutes = (millitaryTime) => {
+const convertTimeToMinutes = (millitaryTime) => {
   const splitTime = millitaryTime.split(':');
   const hours = Number(splitTime[0]);
   const minutes = Number(splitTime[1]);
@@ -78,7 +85,12 @@ const converTimeToMinutes = (millitaryTime) => {
   return totalMinutes;
 };
 
-const getDaysOfTheMonthObjects = (amountOfDays, firstDayOfWeek) => {
+const getDaysOfTheMonthObjects = (
+  amountOfDays,
+  firstDayOfWeek,
+  monthIndex,
+  year
+) => {
   const daysObject = [];
   const amountOfIndexesInAWeek = 6;
   let currentIndex = firstDayOfWeek;
@@ -90,6 +102,9 @@ const getDaysOfTheMonthObjects = (amountOfDays, firstDayOfWeek) => {
       weekday: getWeekdayName(currentIndex),
       darken: false,
       selected: false,
+      today: false,
+      monthIndex,
+      year,
     };
     daysObject.push(dayObject);
 
@@ -136,7 +151,9 @@ const getMonthByValues = (year, month) => {
 
   const daysOfTheMonthObjects = getDaysOfTheMonthObjects(
     daysInMonth,
-    firstDayOfWeek
+    firstDayOfWeek,
+    currentMonth,
+    year
   );
 
   let monthObject = {
@@ -190,6 +207,41 @@ const calculateCalendar = (
   return calendarDays;
 };
 
+const getCurrentDate = () => {
+  const today = new Date();
+  const day = today.getDate();
+  const month = today.getMonth();
+  const year = today.getFullYear();
+
+  return {
+    day,
+    month,
+    year,
+  };
+};
+
+const markToday = (calendarObject) => {
+  const today = getCurrentDate();
+
+  if (today.month !== calendarObject.month) return calendarObject;
+  if (today.year !== calendarObject.year) return calendarObject;
+
+  const days = calendarObject.days.map((dayObject) => {
+    if (dayObject.dayOfTheMonth === today.day) {
+      return {
+        ...dayObject,
+        today: true,
+      };
+    }
+    return dayObject;
+  });
+
+  return {
+    ...calendarObject,
+    days,
+  };
+};
+
 const getCalendarDays = (year, month, day) => {
   const previousMonthValues = getRightDateIndex(year, month - 1, day);
   const nextMonthValues = getRightDateIndex(year, month + 1, day);
@@ -207,6 +259,7 @@ const getCalendarDays = (year, month, day) => {
         selected: true,
       };
     }
+
     return dayObject;
   });
 
@@ -222,40 +275,34 @@ const getCalendarDays = (year, month, day) => {
 
   const days = calculateCalendar(previousMonth, latestMonth, nextMonth);
 
-  const calenderObject = {
+  const calendarObject = {
     year,
     month,
     monthName: latestMonth.monthName,
     days,
   };
 
-  return calenderObject;
-};
+  const filteredCalendarObject = markToday(calendarObject);
 
-const getCurrentDate = () => {
-  const today = new Date();
-  const day = today.getDate();
-  const month = today.getMonth();
-  const year = today.getFullYear();
+  // console.log(filteredCalendarObject, 'the filtered calendar object');
 
-  return {
-    day,
-    month,
-    year,
-  };
+  return filteredCalendarObject;
 };
 
 const convertObjectToDate = (dateObject) => {
   const { day, month, year } = dateObject;
-  return new Date(year, month, day);
+  let date = new Date(year, month, day);
+  date = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+  return date;
 };
 
-const converDateToISO = (dateObject) => {
+const convertDateToISO = (dateObject) => {
   const { day, month, year } = dateObject;
   console.log(dateObject, 'the date object');
 
   const date = new Date(year, month, day);
 
+  console.log(date, 'the date');
   return formatISO(date, { representation: 'date' });
 };
 
@@ -280,6 +327,6 @@ export {
   convertMinutesToTime,
   convertDateToObject,
   convertObjectToDate,
-  converDateToISO,
-  converTimeToMinutes,
+  convertDateToISO,
+  convertTimeToMinutes,
 };

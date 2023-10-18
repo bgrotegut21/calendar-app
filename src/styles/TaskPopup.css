@@ -8,6 +8,12 @@
 
   width: 100%;
   height: 100%;
+  transform: scale(0);
+  transition: transform 0.5s ease-in-out;
+}
+
+.task-popup-container-active {
+  transform: scale(1);
 }
 
 .task-popup {
@@ -20,13 +26,13 @@
   justify-content: center;
   flex-direction: column;
 
+  background: white;
   transform: scale(0);
 
-  background: white;
   transition: transform 0.5s ease-in-out;
 }
 
-.task-popup-aniamtion {
+.task-popup-active {
   transform: scale(1);
 }
 
@@ -87,7 +93,7 @@
 }
 
 .color-selected {
-  border: 2px solid rgb(0, 0, 0);
+  border: 4px solid rgb(0, 0, 0);
 }
 
 .task-popup-time {
@@ -103,3 +109,7 @@
   height: 30px;
   width: 100px;
 }
+
+.task-popup-addbutton:disabled {
+  background-color: rgb(37, 88, 228, 0.5);
+  cursor: default;

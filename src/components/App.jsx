@@ -14,13 +14,14 @@ function App() {
   const [status, setStatus] = useState('taskpopup');
 
   const [date, setDate] = useState(getCurrentDate);
+
   const [state, dispatch] = useReducer(reducer, data);
   const [showTaskAdder, setShowTaskAdder] = useState(true);
   const [taskid, setTaskId] = useState(null);
 
   const selectionBarIsOpen = status === 'selectionbar';
   const taskPopupIsOpen = status === 'taskpopup';
-  console.log(taskPopupIsOpen, 'the task popup is open');
+  // console.log(taskPopupIsOpen, 'the task popup is open');
 
   const handlePreviousMonth = () => {
     const previousMonth = getRightDateIndex(date.year, date.month - 1);
@@ -58,15 +59,14 @@ function App() {
         overlay
       </div>
 
-      {taskPopupIsOpen && (
-        <TaskPopup
-          data={state}
-          date={date}
-          taskId={taskid}
-          dispatch={dispatch}
-          onTaskPopup={handleTaskPopup}
-        />
-      )}
+      <TaskPopup
+        data={state}
+        date={date}
+        taskId={taskid}
+        dispatch={dispatch}
+        onTaskPopup={handleTaskPopup}
+        taskPopupIsOpen={taskPopupIsOpen}
+      />
 
       <Nav
         onOpen={() => {

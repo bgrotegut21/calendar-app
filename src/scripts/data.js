@@ -8,51 +8,51 @@ const data = [
     month: 8,
     day: 25,
     year: 2023,
-    startTime: 420,
+    startTime: 300,
     endTime: 720,
-    startTimeString: convertMinutesToTime(420),
+    startTimeString: convertMinutesToTime(300),
     endTimeString: convertMinutesToTime(720),
     id: uuidv4(),
   },
   {
-    text: 'Task 1',
+    text: 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz',
     color: 'red',
     month: 8,
     day: 25,
     year: 2023,
-    startTime: 420,
-    endTime: 720,
-    startTimeString: convertMinutesToTime(420),
-    endTimeString: convertMinutesToTime(720),
+    startTime: 240,
+    endTime: 1489,
+    startTimeString: convertMinutesToTime(240),
+    endTimeString: convertMinutesToTime(1439),
     id: uuidv4(),
   },
   {
     text: 'Task 1',
-    color: 'red',
+    color: 'blue',
     month: 8,
     day: 25,
     year: 2023,
     startTime: 420,
-    endTime: 720,
+    endTime: 780,
     startTimeString: convertMinutesToTime(420),
-    endTimeString: convertMinutesToTime(720),
+    endTimeString: convertMinutesToTime(780),
     id: uuidv4(),
   },
   {
     text: 'Task 1',
-    color: 'red',
+    color: 'yellow',
     month: 8,
     day: 25,
     year: 2023,
-    startTime: 420,
+    startTime: 485,
     endTime: 720,
-    startTimeString: convertMinutesToTime(420),
+    startTimeString: convertMinutesToTime(485),
     endTimeString: convertMinutesToTime(720),
     id: uuidv4(),
   },
   {
     text: 'Task 1',
-    color: 'red',
+    color: 'yellow',
     month: 8,
     day: 25,
     year: 2023,
@@ -64,6 +64,7 @@ const data = [
   },
 ];
 
+const getTemporaryState = () => {};
 const filterDataByDate = (data, date) => {
   return data.filter(
     (item) =>
@@ -73,9 +74,9 @@ const filterDataByDate = (data, date) => {
   );
 };
 
-const filterDateById = (data, id) => {
+const filterDataById = (data, id) => {
   if (id === null) return null;
-  return data.filter((item) => item.id === id);
+  return data.filter((item) => item.id === id)[0];
 };
 const createDefaultTask = () => {
   let startTime = 420;
@@ -95,26 +96,39 @@ const createDefaultTask = () => {
   };
 };
 
-const reducer = (state, action) => {
-  console.log('');
-  switch (action.type) {
-    case 'add':
-      return [...state, {
-        ...action.payload,
-        id: uuidv4(),
-      }]
-
-    case 'update':
-      return state.map((item) => {
-        if (item.id === action.payload.id) return action.payload;
-        return item;
-      });
-
-    case 'delete':
-      return state.filter((item) => item.id !== action.id);
-    default:
-      throw new Error('Invalid action type');
-  }
+const checkPayload = (payload) => {
+  if (payload.text > 50) return false;
+  return true;
 };
 
-export { data, createDefaultTask, reducer, filterDataByDate, filterDateById };
+const reducer = (state, action) => {
+  if (action.type === 'add' || action.type === 'edit') {
+    const payloadCheck = checkPayload(action.payload);
+    if (!payloadCheck) return state;
+  }
+
+  if (action.type === 'add') {
+    return [
+      ...state,
+      {
+        ...action.payload,
+        id: uuidv4(),
+      },
+    ];
+  }
+
+  if (action.type === 'update') {
+    return state.map((item) => {
+      if (item.id === action.payload.id) return action.payload;
+      return item;
+    });
+  }
+
+  if (action.type === 'delete') {
+    return state.filter((item) => item.id !== action.id);
+  }
+
+  throw new Error('Invalid action type');
+};
+
+export { data, createDefaultTask, reducer, filterDataByDate, filterDataById };

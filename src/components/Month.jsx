@@ -2,19 +2,38 @@ import '../styles/Month.css';
 
 import PropTypes from 'prop-types';
 import { getCalendarDays, getShortenWeekdayNames } from '../scripts/dates';
+import { filterDataByDate } from '../scripts/data';
 
 const weekdays = getShortenWeekdayNames();
 
-const Day = ({ day, onClick }) => {
+const Day = ({ day, data, onClick }) => {
+  // console.log(data, 'the same data');
+  const dayClassState = day.darken
+    ? 'day-darken'
+    : day.selected
+    ? 'day-selected'
+    : 'day';
+  const dayClassToday = day.today ? 'day-today' : '';
+  const dayClassName = `${dayClassState} ${dayClassToday}`;
+  let markedClassName = '';
+
+  if (!day.darken) {
+    const dateObject = {
+      year: day.year,
+      month: day.monthIndex,
+      day: day.dayOfTheMonth,
+    };
+
+    const markedArray = filterDataByDate(data, dateObject);
+    if (markedArray.length > 0) markedClassName = 'marked';
+    if (markedArray.length > 0 && day.selected)
+      markedClassName = 'markedselected';
+  }
+
   return (
-    <button
-      className={
-        day.selected ? 'day-selected' : day.darken ? 'day-darken' : 'day'
-      }
-      disabled={day.darken}
-      onClick={onClick}
-    >
+    <button className={dayClassName} disabled={day.darken} onClick={onClick}>
       {day.dayOfTheMonth}
+      <div className={`day-marking day-marking-${markedClassName}`}>marked</div>
     </button>
   );
 };
@@ -26,13 +45,19 @@ Day.propTypes = {
     dayOfTheMonth: PropTypes.number,
     weekIndex: PropTypes.number,
     weekDay: PropTypes.string,
+    today: PropTypes.bool,
+    year: PropTypes.number,
+    monthIndex: PropTypes.number,
   }),
+  data: PropTypes.array,
   onClick: PropTypes.func,
 };
 
-const Month = ({ date,  changeDay }) => {
+const Month = ({ date, data, changeDay }) => {
   const currentCalendar = getCalendarDays(date.year, date.month, date.day);
-  console.log(currentCalendar);
+
+  console.log(currentCalendar, 'the current calendar');
+
   return (
     <div className="month">
       <div className="weekday-container">
@@ -50,6 +75,7 @@ const Month = ({ date,  changeDay }) => {
               key={index}
               day={day}
               onClick={() => changeDay(day.dayOfTheMonth)}
+              data={data}
             />
           );
         })}

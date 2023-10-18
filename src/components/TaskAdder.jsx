@@ -4,7 +4,7 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 const TaskAdder = ({ isTaskPopup, onTaskPopup }) => {
-  console.log(onTaskPopup, 'the on task popup');
+  // console.log(onTaskPopup, 'the on task popup');
   const [debounce, setDebounce] = useState(true);
 
   let animation = '';

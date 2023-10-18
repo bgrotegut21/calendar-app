@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 
 import trashIcon from '../../public/images/trash.svg';
 import editIcon from '../../public/images/edit.svg';
-
-import { useState } from 'react';
 import { filterDataByDate } from '../scripts/data.js';
 import TaskAdder from './TaskAdder';
 
@@ -24,14 +22,11 @@ const Task = ({ taskData, onEdit, onDelete }) => {
   // console.log(onEdit, 'the on edit');
   // console.log(onDelete, 'the on delete');
   return (
-    <div className="task-item">
+    <div className={`task-item task-item-${taskData.color}`}>
       <div className="task-times">
         <p className="time-text">{taskData.startTimeString}</p>
         <p className="time-text">{taskData.endTimeString}</p>
       </div>
-
-      <div className="task-item-line"></div>
-
       <div className="task-item-info">
         <p className="task-item-info-text">{taskData.text}</p>
       </div>
@@ -73,7 +68,13 @@ const Tasks = ({
   isTaskPopup,
   onTaskPopup,
 }) => {
-  const currentData = filterDataByDate(data, date);
+  // console.log(data, 'the data');
+  // console.log(date, 'the date');
+
+  const currentData = filterDataByDate(data, date).toSorted(
+    (a, b) => a.startTime - b.startTime
+  );
+  // console.log(currentData, 'the current data');
 
   const handleDelete = (id) => {
     dispatch({ type: 'delete', id });

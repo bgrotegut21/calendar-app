@@ -9,7 +9,7 @@ import MonthlyNav from './MonthlyNav';
 import Month from './Month';
 
 const Calendar = ({ date, data, onLeftArrow, onRightArrow, changeDay }) => {
-  console.log(date, 'the current date');
+  // console.log(date, 'the current date');
 
   const monthName = getMonthName(date.month);
   const yearString = String(date.year);
@@ -22,7 +22,7 @@ const Calendar = ({ date, data, onLeftArrow, onRightArrow, changeDay }) => {
         onRightArrow={onRightArrow}
         onLeftArrow={onLeftArrow}
       />
-      <Month date={date} data={[]} changeDay={changeDay} />
+      <Month date={date} data={data} changeDay={changeDay} />
     </div>
   );
 };
