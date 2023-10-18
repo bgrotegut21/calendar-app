@@ -63,8 +63,8 @@ const convertMinutesToTime = (minutes, millitaryTime) => {
     }
   }
 
-  console.log(hours, 'the hours');
-  console.log(minutesLeft, 'the minutes left');
+  // console.log(hours, 'the hours');
+  // console.log(minutesLeft, 'the minutes left');
 
   let hoursString = String(hours);
   let minutesString = String(minutesLeft);
@@ -291,18 +291,16 @@ const getCalendarDays = (year, month, day) => {
 
 const convertObjectToDate = (dateObject) => {
   const { day, month, year } = dateObject;
-  let date = new Date(year, month, day);
-  date = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+  const latestDay = day === null ? 1 : day;
+
+  // console.log(dateObject, 'the current date object');
+
+  let date = new Date(year, month, latestDay);
   return date;
 };
 
 const convertDateToISO = (dateObject) => {
-  const { day, month, year } = dateObject;
-  console.log(dateObject, 'the date object');
-
-  const date = new Date(year, month, day);
-
-  console.log(date, 'the date');
+  const date = convertObjectToDate(dateObject);
   return formatISO(date, { representation: 'date' });
 };
 

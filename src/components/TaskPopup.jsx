@@ -29,16 +29,16 @@ const TaskPopup = ({
   const id = isEdit ? editedTask.id : null;
   let action = isEdit ? 'update' : 'add';
 
-  console.log(isEdit, 'the is edit');
+  // console.log(isEdit, 'the is edit');
 
-  console.log(startTime, 'the start time');
-  console.log(endTime, 'the end time');
+  // console.log(startTime, 'the start time');
+  // console.log(endTime, 'the end time');
 
   const startMillitaryTime = convertMinutesToTime(startTime, true);
   const endMillitaryTime = convertMinutesToTime(endTime, true);
 
-  console.log(startMillitaryTime, 'the start millitary time');
-  console.log(endMillitaryTime, 'the end millitary time');
+  // console.log(startMillitaryTime, 'the start millitary time');
+  // console.log(endMillitaryTime, 'the end millitary time');
 
   const latestDate = {
     year: isEdit ? editedTask.year : date.year,
@@ -95,6 +95,9 @@ const TaskPopup = ({
     const endTimeString = convertMinutesToTime(endTime, false);
 
     let latestDate = new Date(dateISO);
+    latestDate = new Date(
+      latestDate.getTime() + latestDate.getTimezoneOffset() * 60000
+    );
 
     const dateObject = convertDateToObject(latestDate);
 

@@ -1,70 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
 import { convertMinutesToTime } from './dates';
 
-const data = [
-  {
-    text: 'Task 1',
-    color: 'red',
-    month: 8,
-    day: 25,
-    year: 2023,
-    startTime: 300,
-    endTime: 720,
-    startTimeString: convertMinutesToTime(300),
-    endTimeString: convertMinutesToTime(720),
-    id: uuidv4(),
-  },
-  {
-    text: 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz',
-    color: 'red',
-    month: 8,
-    day: 25,
-    year: 2023,
-    startTime: 240,
-    endTime: 1489,
-    startTimeString: convertMinutesToTime(240),
-    endTimeString: convertMinutesToTime(1439),
-    id: uuidv4(),
-  },
-  {
-    text: 'Task 1',
-    color: 'blue',
-    month: 8,
-    day: 25,
-    year: 2023,
-    startTime: 420,
-    endTime: 780,
-    startTimeString: convertMinutesToTime(420),
-    endTimeString: convertMinutesToTime(780),
-    id: uuidv4(),
-  },
-  {
-    text: 'Task 1',
-    color: 'yellow',
-    month: 8,
-    day: 25,
-    year: 2023,
-    startTime: 485,
-    endTime: 720,
-    startTimeString: convertMinutesToTime(485),
-    endTimeString: convertMinutesToTime(720),
-    id: uuidv4(),
-  },
-  {
-    text: 'Task 1',
-    color: 'yellow',
-    month: 8,
-    day: 25,
-    year: 2023,
-    startTime: 420,
-    endTime: 720,
-    startTimeString: convertMinutesToTime(420),
-    endTimeString: convertMinutesToTime(720),
-    id: uuidv4(),
-  },
-];
+const data = [];
 
-const getTemporaryState = () => {};
 const filterDataByDate = (data, date) => {
   return data.filter(
     (item) =>
@@ -108,6 +46,17 @@ const reducer = (state, action) => {
   }
 
   if (action.type === 'add') {
+    console.log(
+      [
+        ...state,
+        {
+          ...action.payload,
+          id: uuidv4(),
+        },
+      ],
+      'the current data'
+    );
+
     return [
       ...state,
       {

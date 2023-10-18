@@ -14,7 +14,7 @@ import { useState } from 'react';
 
 import Switch from './Switch';
 
-const Item = ({ icon, text }) => {
+const Item = ({ icon, text, onClick }) => {
   const [hovering, setHovering] = useState('');
 
   return (
@@ -22,6 +22,7 @@ const Item = ({ icon, text }) => {
       <button
         onMouseEnter={() => setHovering('hovering')}
         onMouseLeave={() => setHovering('')}
+        onClick={onClick}
         className="item-trigger-button"
       >
         item trigger button
@@ -41,6 +42,7 @@ const Item = ({ icon, text }) => {
 Item.propTypes = {
   icon: PropTypes.string,
   text: PropTypes.node,
+  onClick: PropTypes.func,
 };
 
 const ExitButton = ({ onClose }) => {
@@ -63,7 +65,7 @@ ExitButton.propTypes = {
   onClose: PropTypes.func,
 };
 
-const SelectionBar = ({ isOpen, onClose, onSwitch }) => {
+const SelectionBar = ({ isOpen, onClose, onSwitch, onTaskPopup, onModal }) => {
   return (
     <div className={`selectionbar selectionbar-${isOpen ? 'visible' : ''}`}>
       <div className="top-row">
@@ -82,10 +84,22 @@ const SelectionBar = ({ isOpen, onClose, onSwitch }) => {
         </div>
       </div>
       <Item icon={accountIcon} text="Account" />
-      <Item icon={logoutIcon} text="Logout" />
-      <Item icon={trashIcon} text="Delete Account" />
-      <Item icon={refreshIcon} text="Reset Data" />
-      <Item icon={addIcon} text="Add Item" />
+      <Item
+        icon={logoutIcon}
+        text="Logout"
+        onClick={() => onModal('Are you sure you want to logout?')}
+      />
+      <Item
+        icon={trashIcon}
+        text="Delete Account"
+        onClick={() => onModal('Are you sure you want to delete your account?')}
+      />
+      <Item
+        icon={refreshIcon}
+        text="Reset Data"
+        onClick={() => onModal('Are you sure you want to reset your data?')}
+      />
+      <Item icon={addIcon} text="Add Item" onClick={() => onTaskPopup()} />
     </div>
   );
 };
@@ -94,6 +108,8 @@ SelectionBar.propTypes = {
   onClose: PropTypes.func,
   isOpen: PropTypes.bool,
   onSwitch: PropTypes.func,
+  onTaskPopup: PropTypes.func,
+  onModal: PropTypes.func,
 };
 
 export default SelectionBar;

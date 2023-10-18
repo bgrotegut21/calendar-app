@@ -9,18 +9,29 @@ import Calendar from './Calendar';
 import Tasks from './Tasks';
 import SelectionBar from './SelectionBar';
 import TaskPopup from './TaskPopup';
+import Modal from './Modal';
+import AccountPopup from './AccountPopup';
 
 function App() {
-  const [status, setStatus] = useState('taskpopup');
+  const [status, setStatus] = useState('account');
 
   const [date, setDate] = useState(getCurrentDate);
 
   const [state, dispatch] = useReducer(reducer, data);
   const [showTaskAdder, setShowTaskAdder] = useState(true);
   const [taskid, setTaskId] = useState(null);
+  const [modalMessage, setModalMessage] = useState(
+    'Are you sure you want to delete your account?'
+  );
 
   const selectionBarIsOpen = status === 'selectionbar';
   const taskPopupIsOpen = status === 'taskpopup';
+  const modalIsOpen = status === 'modal';
+  const accountPopupIsOpen = status === 'account';
+
+  const overlayOpen =
+    selectionBarIsOpen || taskPopupIsOpen || modalIsOpen || accountPopupIsOpen;
+
   // console.log(taskPopupIsOpen, 'the task popup is open');
 
   const handlePreviousMonth = () => {
@@ -37,9 +48,23 @@ function App() {
   //new task instead of editing an existing one
   const handleTaskPopup = (id) => {
     if (taskPopupIsOpen) return setStatus('normal');
-
-    setTaskId(id);
+    setTaskId(typeof id === 'undefined' ? null : id);
     setStatus('taskpopup');
+  };
+
+  const handleAccount = () => {
+    if (accountPopupIsOpen) return setStatus('normal');
+    setStatus('account');
+  };
+
+  const handleModal = (message) => {
+    if (modalIsOpen || typeof message === 'undefined') {
+      setStatus('normal');
+      setModalMessage('');
+      return;
+    }
+    setModalMessage(message);
+    setStatus('modal');
   };
 
   const changeDay = (day) => {
@@ -51,13 +76,14 @@ function App() {
 
   return (
     <div className="App">
-      <div
-        className={`overlay overlay-${
-          selectionBarIsOpen || taskPopupIsOpen ? 'visible' : ''
-        }`}
-      >
+      <div className={`overlay overlay-${overlayOpen ? 'visible' : ''}`}>
         overlay
       </div>
+
+      <AccountPopup
+        onAccountPopup={handleAccount}
+        accountPopupIsOpen={accountPopupIsOpen}
+      />
 
       <TaskPopup
         data={state}
@@ -66,6 +92,13 @@ function App() {
         dispatch={dispatch}
         onTaskPopup={handleTaskPopup}
         taskPopupIsOpen={taskPopupIsOpen}
+      />
+
+      <Modal
+        message={modalMessage}
+        onYes={handleModal}
+        onNo={handleModal}
+        modalIsOpen={modalIsOpen}
       />
 
       <Nav
@@ -78,13 +111,15 @@ function App() {
         onClose={() => {
           setStatus('normal');
         }}
+        onTaskPopup={handleTaskPopup}
+        onModal={handleModal}
         onSwitch={() => setShowTaskAdder(!showTaskAdder)}
       />
 
       <div className="main-section">
         <Calendar
           date={date}
-          data={data}
+          data={state}
           onLeftArrow={handlePreviousMonth}
           onRightArrow={handleNextMonth}
           changeDay={changeDay}
@@ -94,7 +129,12 @@ function App() {
           date={date}
           dispatch={dispatch}
           onTaskPopup={handleTaskPopup}
-          showTaskAdder={showTaskAdder && !selectionBarIsOpen}
+          showTaskAdder={
+            showTaskAdder &&
+            !selectionBarIsOpen &&
+            !modalIsOpen &&
+            !accountPopupIsOpen
+          }
           isTaskPopup={taskPopupIsOpen}
         />
       </div>

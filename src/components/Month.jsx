@@ -7,7 +7,6 @@ import { filterDataByDate } from '../scripts/data';
 const weekdays = getShortenWeekdayNames();
 
 const Day = ({ day, data, onClick }) => {
-  // console.log(data, 'the same data');
   const dayClassState = day.darken
     ? 'day-darken'
     : day.selected
@@ -31,7 +30,16 @@ const Day = ({ day, data, onClick }) => {
   }
 
   return (
-    <button className={dayClassName} disabled={day.darken} onClick={onClick}>
+    <button
+      className={dayClassName}
+      disabled={day.darken}
+      onClick={() => {
+        console.log(day.dayOfTheMonth, 'the current day');
+        console.log(data, 'the current data state');
+
+        onClick();
+      }}
+    >
       {day.dayOfTheMonth}
       <div className={`day-marking day-marking-${markedClassName}`}>marked</div>
     </button>
@@ -56,7 +64,7 @@ Day.propTypes = {
 const Month = ({ date, data, changeDay }) => {
   const currentCalendar = getCalendarDays(date.year, date.month, date.day);
 
-  console.log(currentCalendar, 'the current calendar');
+  // console.log(currentCalendar, 'the current calendar');
 
   return (
     <div className="month">
