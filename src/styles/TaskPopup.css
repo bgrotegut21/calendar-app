@@ -120,3 +120,13 @@
 .task-popup-addbutton:disabled {
   background-color: rgb(37, 88, 228, 0.5);
   cursor: default;
+}
+
+@media screen and (max-width: 310px) {
+  .task-popup {
+    width: 250px;
+  }
+  .task-popup-textbox {
+    width: 230px;
+  }
+}

@@ -60,3 +60,9 @@
 .modal-button-no {
   background: rgb(37, 88, 228);
 }
+
+@media screen and (max-width: 310px) {
+  .modal {
+    width: 250px;
+  }
+}

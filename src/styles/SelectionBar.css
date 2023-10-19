@@ -86,3 +86,13 @@
   display: flex;
   justify-content: space-between;
 }
+
+@media screen and (max-width: 310px) {
+  .selectionbar {
+    width: 250px;
+  }
+
+  .item-trigger-button {
+    width: 250px;
+  }
+}

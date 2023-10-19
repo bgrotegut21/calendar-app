@@ -8,8 +8,13 @@
 
   width: 100%;
   height: 100%;
+  transform: scale(0);
 
   transition: transform 0.5s ease-in-out;
+}
+
+.account-popup-container-active {
+  transform: scale(1);
 }
 
 .account-popup {
@@ -24,10 +29,15 @@
 
   padding-top: 20px;
   padding-bottom: 20px;
-
   background: white;
 
+  transform: scale(0);
+
   transition: transform 0.5s ease-in-out;
+}
+
+.account-popup-active {
+  transform: scale(1);
 }
 
 .account-info-container {
@@ -85,7 +95,20 @@
 
 .signin-icon {
   width: 20px;
+  margin-left: 10px;
   height: 20px;
   filter: invert(100%) sepia(60%) saturate(0%) hue-rotate(155deg)
     brightness(120%) contrast(100%);
+}
+
+@media screen and (max-width: 410px) {
+  .account-popup {
+    width: 300px;
+  }
+}
+
+@media screen and (max-width: 310px) {
+  .account-popup {
+    width: 250px;
+  }
 }
