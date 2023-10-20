@@ -19,13 +19,12 @@ const TaskPopup = ({
   taskPopupIsOpen,
   onTaskPopup,
 }) => {
+  const [tempState, setTempState] = useState({});
+  const [applied, setApplied] = useState(false);
+
   const editedTask = filterDataById(data, taskId);
   const isEdit = editedTask !== null;
 
-  const startTime = isEdit ? editedTask.startTime : 0;
-  const endTime = isEdit ? editedTask.endTime : 1380;
-
-  const text = isEdit ? editedTask.text : '';
   const id = isEdit ? editedTask.id : null;
   let action = isEdit ? 'update' : 'add';
 
@@ -37,34 +36,18 @@ const TaskPopup = ({
   const startMillitaryTime = convertMinutesToTime(startTime, true);
   const endMillitaryTime = convertMinutesToTime(endTime, true);
 
-  // console.log(startMillitaryTime, 'the start millitary time');
-  // console.log(endMillitaryTime, 'the end millitary time');
-
-  const latestDate = {
-    year: isEdit ? editedTask.year : date.year,
-    month: isEdit ? editedTask.month : date.month,
-    day: isEdit ? editedTask.day : date.day,
-  };
+  console.log(startMillitaryTime, 'the start millitary time');
+  console.log(endMillitaryTime, 'the end millitary time');
 
   const dateISO = convertDateToISO(latestDate);
   const active = taskPopupIsOpen ? 'active' : '';
 
-  const [colorState, setColorState] = useState('blue');
-  const [taskpopupTextLength, setTaskpopupTextLength] = useState(0);
-  const [applied, setApplied] = useState(false);
-
   if (!taskPopupIsOpen) {
-    if (colorState !== 'blue') setColorState('blue');
-    if (taskpopupTextLength !== 0) setTaskpopupTextLength(0);
-    if (applied) setApplied(false);
   }
 
   if (taskPopupIsOpen) {
     if (isEdit) {
       if (!applied) {
-        setColorState(editedTask.color);
-        setTaskpopupTextLength(editedTask.text.length);
-        setApplied(true);
       }
     }
   }
@@ -118,13 +101,13 @@ const TaskPopup = ({
         id,
       },
     });
-    onTaskPopup();
+    onTaskPopup(null);
   };
 
   return (
     <div className={`task-popup-container task-popup-container-${active}`}>
       <div className={`task-popup task-popup-${active}`}>
-        <button className="popup-exit-button" onClick={() => onTaskPopup()}>
+        <button className="popup-exit-button" onClick={() => onTaskPopup(null)}>
           X
         </button>
         <form

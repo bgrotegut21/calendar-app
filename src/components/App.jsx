@@ -11,6 +11,7 @@ import SelectionBar from './SelectionBar';
 import TaskPopup from './TaskPopup';
 import Modal from './Modal';
 import AccountPopup from './AccountPopup';
+import AccountInfo from './AccountInfo';
 
 function App() {
   const [status, setStatus] = useState('account');
@@ -28,9 +29,14 @@ function App() {
   const taskPopupIsOpen = status === 'taskpopup';
   const modalIsOpen = status === 'modal';
   const accountPopupIsOpen = status === 'account';
+  const accountInfoIsOpen = status === 'accountinfo';
 
   const overlayOpen =
-    selectionBarIsOpen || taskPopupIsOpen || modalIsOpen || accountPopupIsOpen;
+    selectionBarIsOpen ||
+    taskPopupIsOpen ||
+    modalIsOpen ||
+    accountPopupIsOpen ||
+    accountInfoIsOpen;
 
   // console.log(taskPopupIsOpen, 'the task popup is open');
 
@@ -48,13 +54,18 @@ function App() {
   //new task instead of editing an existing one
   const handleTaskPopup = (id) => {
     if (taskPopupIsOpen) return setStatus('normal');
-    setTaskId(typeof id === 'undefined' ? null : id);
+    setTaskId(id);
     setStatus('taskpopup');
   };
 
   const handleAccount = () => {
     if (accountPopupIsOpen) return setStatus('normal');
     setStatus('account');
+  };
+
+  const handleAccountInfo = () => {
+    if (accountInfoIsOpen) return setStatus('normal');
+    setStatus('accountinfo');
   };
 
   const handleModal = (message) => {
@@ -92,6 +103,11 @@ function App() {
         dispatch={dispatch}
         onTaskPopup={handleTaskPopup}
         taskPopupIsOpen={taskPopupIsOpen}
+      />
+
+      <AccountInfo
+        onAccountInfo={handleAccountInfo}
+        accountInfoIsOpen={accountInfoIsOpen}
       />
 
       <Modal
@@ -133,7 +149,8 @@ function App() {
             showTaskAdder &&
             !selectionBarIsOpen &&
             !modalIsOpen &&
-            !accountPopupIsOpen
+            !accountPopupIsOpen &&
+            !accountInfoIsOpen
           }
           isTaskPopup={taskPopupIsOpen}
         />

@@ -99,7 +99,7 @@ const SelectionBar = ({ isOpen, onClose, onSwitch, onTaskPopup, onModal }) => {
         text="Reset Data"
         onClick={() => onModal('Are you sure you want to reset your data?')}
       />
-      <Item icon={addIcon} text="Add Item" onClick={() => onTaskPopup()} />
+      <Item icon={addIcon} text="Add Item" onClick={() => onTaskPopup(null)} />
     </div>
   );
 };

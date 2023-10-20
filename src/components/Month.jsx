@@ -34,8 +34,8 @@ const Day = ({ day, data, onClick }) => {
       className={dayClassName}
       disabled={day.darken}
       onClick={() => {
-        console.log(day.dayOfTheMonth, 'the current day');
-        console.log(data, 'the current data state');
+        // console.log(day.dayOfTheMonth, 'the current day');
+        // console.log(data, 'the current data state');
 
         onClick();
       }}
