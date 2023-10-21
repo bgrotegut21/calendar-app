@@ -32,13 +32,6 @@
   transition: transform 0.5s ease-in-out;
 }
 
-.taskpopup-form-data {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
 .task-popup-active {
   transform: scale(1);
 }

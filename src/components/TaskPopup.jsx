@@ -19,86 +19,101 @@ const TaskPopup = ({
   taskPopupIsOpen,
   onTaskPopup,
 }) => {
-  const [tempState, setTempState] = useState({});
+  const defaultTaskState = {
+    text: '',
+    color: 'blue',
+    month: date.month,
+    day: date.day,
+    year: date.year,
+    startTime: 0,
+    endTime: 1439,
+  };
+
+  const [tempTask, setTempTask] = useState(defaultTaskState);
   const [applied, setApplied] = useState(false);
 
   const editedTask = filterDataById(data, taskId);
   const isEdit = editedTask !== null;
 
   const id = isEdit ? editedTask.id : null;
-  let action = isEdit ? 'update' : 'add';
+  const action = isEdit ? 'update' : 'add';
 
-  // console.log(isEdit, 'the is edit');
+  const startMillitaryTime = convertMinutesToTime(tempTask.startTime, true);
+  const endMillitaryTime = convertMinutesToTime(tempTask.endTime, true);
 
-  // console.log(startTime, 'the start time');
-  // console.log(endTime, 'the end time');
+  // console.log(startMillitaryTime, 'the start millitary time');
+  // console.log(endMillitaryTime, 'the end millitary time');
 
-  const startMillitaryTime = convertMinutesToTime(startTime, true);
-  const endMillitaryTime = convertMinutesToTime(endTime, true);
+  // console.log(defaultTaskState, 'the default task state');
 
-  console.log(startMillitaryTime, 'the start millitary time');
-  console.log(endMillitaryTime, 'the end millitary time');
+  const latestDate = {
+    month: tempTask.month,
+    day: tempTask.day,
+    year: tempTask.year,
+  };
 
+  // console.log(latestDate, 'the latest date');
   const dateISO = convertDateToISO(latestDate);
+  // console.log(dateISO, 'the date iso');
+
   const active = taskPopupIsOpen ? 'active' : '';
 
+  const checkDateDifference = () => {
+    if (
+      latestDate.month !== date.month ||
+      latestDate.day !== date.day ||
+      latestDate.year !== date.year
+    ) {
+      return true;
+    }
+    return false;
+  };
+
   if (!taskPopupIsOpen) {
+    const isDifferent = checkDateDifference();
+
+    if (isDifferent) {
+      setTempTask({
+        ...defaultTaskState,
+        month: date.month,
+        day: date.day,
+        year: date.year,
+      });
+    }
+
+    if (applied) {
+      setTempTask({
+        ...defaultTaskState,
+        month: date.month,
+        day: date.day,
+        year: date.year,
+      });
+      setApplied(false);
+    }
   }
 
   if (taskPopupIsOpen) {
-    if (isEdit) {
-      if (!applied) {
-      }
+    if (isEdit && !applied) {
+      setTempTask(editedTask);
+      setApplied(true);
     }
   }
 
   //deals with color state chang
-  const blueSelected = colorState === 'blue' ? 'selected' : '';
-  const redSelected = colorState === 'red' ? 'selected' : '';
-  const yellowSelected = colorState === 'yellow' ? 'selected' : '';
+  const blueSelected = tempTask.color === 'blue' ? 'selected' : '';
+  const redSelected = tempTask.color === 'red' ? 'selected' : '';
+  const yellowSelected = tempTask.color === 'yellow' ? 'selected' : '';
 
-  const messageIsToLong = taskpopupTextLength > 50;
+  const messageIsToLong = tempTask.text.length > 50;
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const formDataObject = Object.fromEntries(formData.entries());
-
-    // console.log(formDataObject, 'the form data object');
-
-    const { startMillitaryTime, endMillitaryTime, dateISO, text } =
-      formDataObject;
-
-    // console.log(dateISO, 'the curreny date iso');
-
-    const startTime = convertTimeToMinutes(startMillitaryTime);
-    const endTime = convertTimeToMinutes(endMillitaryTime);
-
-    const startTimeString = convertMinutesToTime(startTime, false);
-    const endTimeString = convertMinutesToTime(endTime, false);
-
-    let latestDate = new Date(dateISO);
-    latestDate = new Date(
-      latestDate.getTime() + latestDate.getTimezoneOffset() * 60000
-    );
-
-    const dateObject = convertDateToObject(latestDate);
-
-    const { month, year, day } = dateObject;
-
+  const handleSubmit = () => {
     dispatch({
       type: action,
       payload: {
-        text,
-        color: colorState,
-        month,
-        day,
-        year,
-        startTime,
-        endTime,
-        startTimeString,
-        endTimeString,
-        id,
+        ...tempTask,
+        startTimeString: convertMinutesToTime(tempTask.startTime),
+        endTimeString: convertMinutesToTime(tempTask.endTime),
+        id: id,
       },
     });
     onTaskPopup(null);
@@ -110,105 +125,101 @@ const TaskPopup = ({
         <button className="popup-exit-button" onClick={() => onTaskPopup(null)}>
           X
         </button>
-        <form
-          className="taskpopup-form-data"
-          onSubmit={handleSubmit}
-          method="POST"
-        >
-          <h2>Task</h2>
-          <input
-            name="text"
-            className="task-popup-textbox"
-            onChange={(e) => {
-              setTaskpopupTextLength(e.target.value.length);
-            }}
-            defaultValue={text}
-            key={text}
-            placeholder="Enter task here"
-          />
-          <h2>Color</h2>
-          <div className="task-popup-colors">
-            <button
-              type="button"
-              className={`color color-red color-${redSelected}`}
-              onClick={() => setColorState('red')}
-            >
-              red
-            </button>
-            <button
-              type="button"
-              className={`color color-blue color-${blueSelected}`}
-              onClick={() => setColorState('blue')}
-            >
-              blue
-            </button>
-            <button
-              type="button"
-              className={`color color-yellow color-${yellowSelected}`}
-              onClick={() => setColorState('yellow')}
-            >
-              yellow
-            </button>
-          </div>
 
-          <h2>Date</h2>
-          <input
-            type="date"
-            name="dateISO"
-            className="task-popup-date"
-            defaultValue={dateISO}
-            key={dateISO}
-          />
-
-          <h2>Time</h2>
-
-          <div className="task-popup-times">
-            <input
-              className="task-popup-time"
-              type="time"
-              name="startMillitaryTime"
-              defaultValue={startMillitaryTime}
-              key={startMillitaryTime}
-            />
-            <p>to</p>
-            <input
-              name="endMillitaryTime"
-              className="task-popup-time"
-              type="time"
-              defaultValue={endMillitaryTime}
-              key={endMillitaryTime}
-            />
-          </div>
-
+        <h2>Task</h2>
+        <input
+          name="text"
+          className="task-popup-textbox"
+          value={tempTask.text}
+          onChange={(e) => {
+            setTempTask({ ...tempTask, text: e.target.value });
+          }}
+          placeholder="Enter task here"
+        />
+        <h2>Color</h2>
+        <div className="task-popup-colors">
           <button
-            type="submit"
-            disabled={messageIsToLong}
-            className="task-popup-addbutton"
+            type="button"
+            className={`color color-red color-${redSelected}`}
+            onClick={() => setTempTask({ ...tempTask, color: 'red' })}
           >
-            {isEdit ? 'Update' : 'Add'}
+            red
           </button>
-          <p className="error-message">
-            {messageIsToLong && '⚠️ Message cannot be over 50 characters.'}
-          </p>
-        </form>
+          <button
+            type="button"
+            className={`color color-blue color-${blueSelected}`}
+            onClick={() => setTempTask({ ...tempTask, color: 'blue' })}
+          >
+            blue
+          </button>
+          <button
+            type="button"
+            className={`color color-yellow color-${yellowSelected}`}
+            onClick={() => setTempTask({ ...tempTask, color: 'yellow' })}
+          >
+            yellow
+          </button>
+        </div>
+
+        <h2>Date</h2>
+        <input
+          type="date"
+          name="dateISO"
+          className="task-popup-date"
+          value={dateISO}
+          onChange={(e) => {
+            const rawDate = new Date(e.target.value);
+            const currentDate = new Date(
+              rawDate.getTime() + Math.abs(rawDate.getTimezoneOffset() * 60000)
+            );
+
+            const dateObject = convertDateToObject(currentDate);
+            setTempTask({ ...tempTask, ...dateObject });
+          }}
+        />
+
+        <h2>Time</h2>
+
+        <div className="task-popup-times">
+          <input
+            className="task-popup-time"
+            type="time"
+            name="startMillitaryTime"
+            value={startMillitaryTime}
+            onChange={(e) => {
+              const startMinutes = convertTimeToMinutes(e.target.value);
+              setTempTask({ ...tempTask, startTime: startMinutes });
+            }}
+          />
+          <p>to</p>
+          <input
+            name="endMillitaryTime"
+            className="task-popup-time"
+            type="time"
+            value={endMillitaryTime}
+            onChange={(e) => {
+              const endMinutes = convertTimeToMinutes(e.target.value);
+              setTempTask({ ...tempTask, endTime: endMinutes });
+            }}
+          />
+        </div>
+
+        <button
+          disabled={messageIsToLong}
+          className="task-popup-addbutton"
+          onClick={handleSubmit}
+        >
+          {isEdit ? 'Update' : 'Add'}
+        </button>
+        <p className="error-message">
+          {messageIsToLong && '⚠️ Message cannot be over 50 characters.'}
+        </p>
       </div>
     </div>
   );
 };
 
 TaskPopup.propTypes = {
-  taskData: PropTypes.shape({
-    text: PropTypes.string,
-    color: PropTypes.string,
-    month: PropTypes.number,
-    day: PropTypes.number,
-    year: PropTypes.number,
-    startTime: PropTypes.number,
-    endTime: PropTypes.number,
-    startTimeString: PropTypes.string,
-    endTimeString: PropTypes.string,
-    id: PropTypes.string,
-  }),
   date: PropTypes.shape({
     month: PropTypes.number,
     day: PropTypes.number,

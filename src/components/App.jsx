@@ -14,7 +14,7 @@ import AccountPopup from './AccountPopup';
 import AccountInfo from './AccountInfo';
 
 function App() {
-  const [status, setStatus] = useState('account');
+  const [status, setStatus] = useState('taskpopup');
 
   const [date, setDate] = useState(getCurrentDate);
 
