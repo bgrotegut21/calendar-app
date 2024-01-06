@@ -63,8 +63,7 @@ Day.propTypes = {
 
 const Month = ({ date, data, changeDay }) => {
   const currentCalendar = getCalendarDays(date.year, date.month, date.day);
-
-  // console.log(currentCalendar, 'the current calendar');
+  console.log(data, 'the current data');
 
   return (
     <div className="month">

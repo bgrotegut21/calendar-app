@@ -9,7 +9,7 @@ import MonthlyNav from './MonthlyNav';
 import Month from './Month';
 
 const Calendar = ({ date, data, onLeftArrow, onRightArrow, changeDay }) => {
-  // console.log(date, 'the current date');
+  // console.log(data, 'the current data');
 
   const monthName = getMonthName(date.month);
   const yearString = String(date.year);

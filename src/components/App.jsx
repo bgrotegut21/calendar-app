@@ -14,7 +14,7 @@ import AccountPopup from './AccountPopup';
 import AccountInfo from './AccountInfo';
 
 function App() {
-  const [status, setStatus] = useState('taskpopup');
+  const [status, setStatus] = useState('account');
 
   const [date, setDate] = useState(getCurrentDate);
 
@@ -103,6 +103,7 @@ function App() {
         dispatch={dispatch}
         onTaskPopup={handleTaskPopup}
         taskPopupIsOpen={taskPopupIsOpen}
+        changeDay={changeDay}
       />
 
       <AccountInfo

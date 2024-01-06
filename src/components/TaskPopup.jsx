@@ -18,6 +18,7 @@ const TaskPopup = ({
   dispatch,
   taskPopupIsOpen,
   onTaskPopup,
+  changeDay,
 }) => {
   const defaultTaskState = {
     text: '',
@@ -107,10 +108,18 @@ const TaskPopup = ({
   const messageIsToLong = tempTask.text.length > 50;
 
   const handleSubmit = () => {
+    let tempTaskDay = tempTask.day;
+
+    if (tempTask.day === null) {
+      tempTaskDay = 1;
+      changeDay(1);
+    }
+
     dispatch({
       type: action,
       payload: {
         ...tempTask,
+        day: tempTaskDay,
         startTimeString: convertMinutesToTime(tempTask.startTime),
         endTimeString: convertMinutesToTime(tempTask.endTime),
         id: id,
@@ -230,6 +239,7 @@ TaskPopup.propTypes = {
   dispatch: PropTypes.func,
   taskPopupIsOpen: PropTypes.bool,
   onTaskPopup: PropTypes.func,
+  changeDay: PropTypes.func,
 };
 
 export default TaskPopup;
