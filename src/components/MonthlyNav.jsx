@@ -2,8 +2,8 @@ import '../styles/MonthlyNav.css';
 
 import PropTypes from 'prop-types';
 
-import previousArrow from '../../public/images/previousArrow.svg';
-import nextArrow from '../../public/images/nextArrow.svg';
+import previousArrow from '../images/previousArrow.svg';
+import nextArrow from '../images/nextArrow.svg';
 
 const Arrow = ({ onClick, src, alt }) => {
   return (

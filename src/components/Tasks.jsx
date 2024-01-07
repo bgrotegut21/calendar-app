@@ -1,8 +1,8 @@
 import '../styles/Tasks.css';
 import PropTypes from 'prop-types';
 
-import trashIcon from '../../public/images/trash.svg';
-import editIcon from '../../public/images/edit.svg';
+import trashIcon from '../images/trash.svg';
+import editIcon from '../images/edit.svg';
 import { filterDataByDate } from '../scripts/data.js';
 import TaskAdder from './TaskAdder';
 

@@ -1,7 +1,7 @@
 import '../styles/AccountPopup.css';
 
-import signInIcon from '../../public/images/signInIcon.svg';
-import calendarIcon from '../../public/images/calendar.svg';
+import signInIcon from '../images/signInIcon.svg';
+import calendarIcon from '../images/calendar.svg';
 
 import PropTypes from 'prop-types';
 

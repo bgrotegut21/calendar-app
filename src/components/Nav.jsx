@@ -1,5 +1,5 @@
 import '../styles/Nav.css';
-import calenderIcon from '../../public/images/calendar.svg';
+import calenderIcon from '../images/calendar.svg';
 
 import PropTypes from 'prop-types';
 

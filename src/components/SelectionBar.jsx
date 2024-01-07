@@ -1,13 +1,13 @@
 import '../styles/SelectionBar.css';
 
-import accountIcon from '../../public/images/account-icon.svg';
-import logoutIcon from '../../public/images/logout.svg';
-import refreshIcon from '../../public/images/refresh.svg';
-import trashIcon from '../../public/images/trash.svg';
-import addIcon from '../../public/images/add.svg';
+import accountIcon from '../images/account-icon.svg';
+import logoutIcon from '../images/logout.svg';
+import refreshIcon from '../images/refresh.svg';
+import trashIcon from '../images/trash.svg';
+import addIcon from '../images/add.svg';
 
-import plusOnIcon from '../../public/images/plusOn.svg';
-import plusOffIcon from '../../public/images/plusOff.svg';
+import plusOnIcon from '../images/plusOn.svg';
+import plusOffIcon from '../images/plusOff.svg';
 
 import PropTypes from 'prop-types';
 import { useState } from 'react';
