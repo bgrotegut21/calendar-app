@@ -68,7 +68,7 @@ const Tasks = ({
   isTaskPopup,
   onTaskPopup,
 }) => {
-  // console.log(data, 'the data');
+  console.log(data, 'the data');
   // console.log(date, 'the date');
 
   const currentData = filterDataByDate(data, date).toSorted(

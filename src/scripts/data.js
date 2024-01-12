@@ -13,8 +13,12 @@ const filterDataByDate = (data, date) => {
 };
 
 const filterDataById = (data, id) => {
+  console.log('filtering data by id');
   if (id === null) return null;
-  return data.filter((item) => item.id === id)[0];
+  const filteredData = data.filter((item) => item.id === id);
+
+  if (filteredData.length === 0) return null;
+  return filteredData[0];
 };
 const createDefaultTask = () => {
   let startTime = 420;
@@ -40,23 +44,12 @@ const checkPayload = (payload) => {
 };
 
 const reducer = (state, action) => {
-  if (action.type === 'add' || action.type === 'edit') {
+  if (action.type === 'add' || action.type === 'update') {
     const payloadCheck = checkPayload(action.payload);
     if (!payloadCheck) return state;
   }
 
   if (action.type === 'add') {
-    console.log(
-      [
-        ...state,
-        {
-          ...action.payload,
-          id: uuidv4(),
-        },
-      ],
-      'the current data'
-    );
-
     return [
       ...state,
       {
@@ -74,7 +67,13 @@ const reducer = (state, action) => {
   }
 
   if (action.type === 'delete') {
-    return state.filter((item) => item.id !== action.id);
+    // console.log(state, 'the current state');
+    // console.log(action, 'the current action');
+
+    const filteredState = state.filter((item) => item.id !== action.id);
+    console.log(filteredState, 'the filtered state');
+
+    return filteredState;
   }
 
   throw new Error('Invalid action type');
